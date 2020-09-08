@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { handleInitialData } from '../actions/shared'
+import { handleInitialData } from '../redux/modules/initialData'
 import { BrowserRouter as Router, Route } from 'react-router-dom'
 import Leaderboard from './Leaderboard'
 import Dashboard from './Dashboard'

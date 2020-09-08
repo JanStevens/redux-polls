@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { handleAddPoll } from '../actions/polls'
+import { handleAddPoll } from '../redux/modules/polls'
 import { useHistory } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 

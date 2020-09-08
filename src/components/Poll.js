@@ -1,5 +1,5 @@
 import React from 'react'
-import { handleAddAnswer } from '../actions/answers'
+import { handleAddAnswer } from '../redux/modules/answers'
 import { getPercentage, getTextKeys, getVoteKeys } from '../utils/helpers'
 import { useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
@@ -12,7 +12,7 @@ const Poll = () => {
   const polls = useSelector(({ polls }) => polls)
 
   const poll = polls[id]
-  console.log('GOT HERE')
+
   if (!poll) {
     return <p>This poll doesn't exist</p>
   }
