@@ -1,23 +1,24 @@
-import React, { useMemo } from 'react'
+import React from 'react'
 import { useSelector } from 'react-redux'
+import { createSelector } from '@reduxjs/toolkit'
+
+const selectUsers = createSelector(
+  (state) => state.users,
+  (users) =>
+    Object.values(users).sort(
+      (
+        { polls: pollsA, answers: answersA },
+        { polls: pollsB, answers: answersB }
+      ) => pollsB.length + answersB.length - (pollsA.length + answersA.length)
+    )
+)
 
 const Leaderboard = () => {
-  const users = useSelector((state) => state.users)
-
-  const sorted = useMemo(
-    () =>
-      Object.values(users).sort(
-        (
-          { polls: pollsA, answers: answersA },
-          { polls: pollsB, answers: answersB }
-        ) => pollsB.length + answersB.length - (pollsA.length + answersA.length)
-      ),
-    [users]
-  )
+  const users = useSelector(selectUsers)
 
   return (
     <ul>
-      {sorted.map(({ id, avatarURL, name, polls, answers }) => (
+      {users.map(({ id, avatarURL, name, polls, answers }) => (
         <li className="user" key={id}>
           <img src={avatarURL} alt={`Avatar for ${name}`} />
           <div>

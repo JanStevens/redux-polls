@@ -1,23 +1,35 @@
 import React, { useState } from 'react'
 import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
+import { createSelector } from '@reduxjs/toolkit'
+
+const selectAuthedUser = (state) => state.authedUser
+const selectPolls = (state) => state.polls
+
+const selectAnswers = createSelector(
+  [selectAuthedUser, (state) => state.users],
+  (authedUser, users) => users[authedUser].answers
+)
+
+const selectAnswered = createSelector(
+  [selectAnswers, selectPolls],
+  (answers, polls) =>
+    answers.map((id) => polls[id]).sort((a, b) => b.timestamp - a.timestamp)
+)
+
+const selectUnAnswered = createSelector(
+  [selectAnswers, selectPolls],
+  (answers, polls) =>
+    Object.keys(polls)
+      .filter((id) => !answers.includes(id))
+      .map((id) => polls[id])
+      .sort((a, b) => b.timestamp - a.timestamp)
+)
 
 const Dashboard = () => {
   const [list, setList] = useState('unanswered')
-  const authedUser = useSelector((state) => state.authedUser)
-  const users = useSelector((state) => state.users)
-  const polls = useSelector((state) => state.polls)
-
-  const answers = users[authedUser].answers
-  const answered = answers
-    .map((id) => polls[id])
-    .sort((a, b) => b.timestamp - a.timestamp)
-
-  const unanswered = Object.keys(polls)
-    .filter((id) => !answers.includes(id))
-    .map((id) => polls[id])
-    .sort((a, b) => b.timestamp - a.timestamp)
-
+  const answered = useSelector(selectAnswered)
+  const unanswered = useSelector(selectUnAnswered)
   const questions = { answered, unanswered }
 
   return (

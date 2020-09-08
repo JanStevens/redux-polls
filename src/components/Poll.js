@@ -3,35 +3,44 @@ import { handleAddAnswer } from '../redux/modules/answers'
 import { getPercentage, getTextKeys, getVoteKeys } from '../utils/helpers'
 import { useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
+import { createSelector } from '@reduxjs/toolkit'
+
+const voteKeys = getVoteKeys()
+
+const selectPoll = (state, id) => state.polls[id]
+const selectTotalVotes = createSelector([selectPoll], (poll) =>
+  poll ? voteKeys.reduce((total, key) => total + poll[key].length, 0) : 0
+)
+
+const selectAuthorAvatar = createSelector(
+  [selectPoll, (state) => state.users],
+  (poll, users) => users[poll.author].avatarURL
+)
+
+const selectVote = createSelector(
+  [selectPoll, (state) => state.authedUser],
+  (poll, authedUser) =>
+    voteKeys.reduce((vote, key) => {
+      if (poll[key].includes(authedUser)) {
+        return key[0]
+      }
+      return vote === null ? null : vote
+    }, null)
+)
 
 const Poll = () => {
   const { id } = useParams()
   const dispatch = useDispatch()
   const authedUser = useSelector((state) => state.authedUser)
-  const users = useSelector(({ users }) => users)
-  const polls = useSelector(({ polls }) => polls)
 
-  const poll = polls[id]
+  const poll = useSelector((state) => selectPoll(state, id))
+  const totalVotes = useSelector((state) => selectTotalVotes(state, id))
+  const authorAvatar = useSelector((state) => selectAuthorAvatar(state, id))
+  const vote = useSelector((state) => selectVote(state, id))
 
   if (!poll) {
     return <p>This poll doesn't exist</p>
   }
-
-  const voteKeys = getVoteKeys()
-
-  const authorAvatar = users[poll.author].avatarURL
-
-  const vote = voteKeys.reduce((vote, key) => {
-    if (poll[key].includes(authedUser)) {
-      return key[0]
-    }
-    return vote === null ? null : vote
-  }, null)
-
-  const totalVotes = voteKeys.reduce(
-    (total, key) => total + poll[key].length,
-    0
-  )
 
   const handleAnswer = (answer) => {
     if (vote === null) {
