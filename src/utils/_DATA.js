@@ -174,12 +174,12 @@ const generateUID = () =>
   Math.random().toString(36).substring(2, 15)
 
 export const _getUsers = () =>
-  new Promise((res, rej) => {
+  new Promise((res, _rej) => {
     setTimeout(() => res({ ...users }), 1000)
   })
 
 export const _getPolls = () =>
-  new Promise((res, rej) => {
+  new Promise((res, _rej) => {
     setTimeout(() => res({ ...polls }), 1000)
   })
 
@@ -206,7 +206,7 @@ const formatPoll = (poll) => ({
 })
 
 export const _savePoll = (poll) =>
-  new Promise((res, rej) => {
+  new Promise((res, _rej) => {
     const formattedPoll = formatPoll(poll)
 
     setTimeout(() => {
@@ -220,7 +220,7 @@ export const _savePoll = (poll) =>
   })
 
 export const _savePollAnswer = ({ authedUser, id, answer }) =>
-  new Promise((res, rej) => {
+  new Promise((res, _rej) => {
     setTimeout(() => {
       const user = users[authedUser]
       const poll = polls[id]
