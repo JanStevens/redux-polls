@@ -3,7 +3,8 @@ import { handleInitialData } from './initialData'
 
 const authedUserSlice = createSlice({
   name: 'authedUser',
-  initialState: null,
+  initialState: '' as string,
+  reducers: {},
   extraReducers: (builder) => {
     builder.addCase(
       handleInitialData.fulfilled,

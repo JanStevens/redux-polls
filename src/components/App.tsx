@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useAppDispatch, useAppSelector } from '../redux'
 import { handleInitialData } from '../redux/modules/initialData'
 import { BrowserRouter as Router, Route } from 'react-router-dom'
 import Leaderboard from './Leaderboard'
@@ -9,8 +9,8 @@ import Nav from './NavBar'
 import Poll from './Poll'
 
 function App() {
-  const dispatch = useDispatch()
-  const loading = useSelector((state) => state.authedUser === null)
+  const dispatch = useAppDispatch()
+  const loading = useAppSelector((state) => state.authedUser === '')
 
   useEffect(() => {
     dispatch(handleInitialData())

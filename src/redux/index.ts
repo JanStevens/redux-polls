@@ -1,4 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit'
+import { useDispatch, TypedUseSelectorHook, useSelector } from 'react-redux'
 import { loadingBarReducer } from 'react-redux-loading'
 import middleware from './middleware'
 
@@ -16,5 +17,10 @@ const store = configureStore({
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(middleware),
 })
+
+export type RootState = ReturnType<typeof store.getState>
+export type AppDispatch = typeof store.dispatch
+export const useAppDispatch = () => useDispatch<AppDispatch>()
+export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector
 
 export default store

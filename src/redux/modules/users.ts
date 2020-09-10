@@ -1,3 +1,4 @@
+import { UsersType } from './../../types/index'
 import { createSlice } from '@reduxjs/toolkit'
 
 import { handleAddPoll } from './polls'
@@ -6,7 +7,7 @@ import { handleInitialData } from './initialData'
 
 const userSlice = createSlice({
   name: 'users',
-  initialState: {},
+  initialState: {} as UsersType,
   reducers: {},
   extraReducers: (builder) => {
     builder.addCase(handleInitialData.fulfilled, (state, action) => ({
@@ -20,8 +21,8 @@ const userSlice = createSlice({
     })
 
     builder.addCase(handleAddAnswer.fulfilled, (state, action) => {
-      const { authedUser, id } = action.payload.answer
-      state[authedUser].answers.push(id)
+      const { authedUser, id, answer } = action.payload.answer
+      state[authedUser].answers[id] = answer
     })
   },
 })

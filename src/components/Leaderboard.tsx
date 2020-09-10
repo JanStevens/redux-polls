@@ -1,20 +1,23 @@
 import React from 'react'
-import { useSelector } from 'react-redux'
+import { useAppSelector, RootState } from '../redux'
 import { createSelector } from '@reduxjs/toolkit'
 
 const selectUsers = createSelector(
-  (state) => state.users,
+  (state: RootState) => state.users,
   (users) =>
     Object.values(users).sort(
       (
         { polls: pollsA, answers: answersA },
         { polls: pollsB, answers: answersB }
-      ) => pollsB.length + answersB.length - (pollsA.length + answersA.length)
+      ) =>
+        pollsB.length +
+        Object.keys(answersB).length -
+        (pollsA.length + Object.keys(answersA).length)
     )
 )
 
 const Leaderboard = () => {
-  const users = useSelector(selectUsers)
+  const users = useAppSelector(selectUsers)
 
   return (
     <ul>
@@ -24,7 +27,7 @@ const Leaderboard = () => {
           <div>
             <h1>{name}</h1>
             <p>{polls.length} Polls</p>
-            <p>{answers.length} Answers</p>
+            <p>{Object.keys(answers).length} Answers</p>
           </div>
         </li>
       ))}
@@ -32,4 +35,4 @@ const Leaderboard = () => {
   )
 }
 
-export default Leaderboard
+export default React.memo(Leaderboard)

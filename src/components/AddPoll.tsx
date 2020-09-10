@@ -1,11 +1,11 @@
-import React, { useState } from 'react'
+import React, { useState, ChangeEvent, SyntheticEvent } from 'react'
 import { handleAddPoll } from '../redux/modules/polls'
 import { useHistory } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
+import { useAppDispatch } from '../redux'
 
 const AddPoll = () => {
   const history = useHistory()
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
 
   const [options, setOptions] = useState({
     a: '',
@@ -16,7 +16,7 @@ const AddPoll = () => {
 
   const [question, setQuestion] = useState('')
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: SyntheticEvent) => {
     e.preventDefault()
     history.push('/')
     dispatch(
@@ -27,7 +27,7 @@ const AddPoll = () => {
     )
   }
 
-  const handleInputChange = ({ target }) => {
+  const handleInputChange = ({ target }: ChangeEvent<HTMLInputElement>) => {
     const { value, name } = target
     setOptions({
       ...options,

@@ -1,14 +1,17 @@
+import { PollsType } from './../../types/index'
+import { RootState } from './../index'
 import { savePoll } from '../../utils/api'
 import { showLoading, hideLoading } from 'react-redux-loading'
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import { handleInitialData } from './initialData'
 import { handleAddAnswer } from './answers'
+import { NewPollSubmitType } from '../../types'
 
 export const handleAddPoll = createAsyncThunk(
   'polls/handleAddPoll',
-  async (pollData, { dispatch, getState }) => {
+  async (pollData: NewPollSubmitType, { dispatch, getState }) => {
     dispatch(showLoading())
-    const { authedUser: author } = getState()
+    const { authedUser: author } = getState() as RootState
     const poll = await savePoll({ ...pollData, author })
     dispatch(hideLoading())
     return { poll }
@@ -17,7 +20,7 @@ export const handleAddPoll = createAsyncThunk(
 
 const pollSlice = createSlice({
   name: 'polls',
-  initialState: {},
+  initialState: {} as PollsType,
   reducers: {},
   extraReducers: (builder) => {
     builder.addCase(handleInitialData.fulfilled, (state, action) => ({
@@ -31,9 +34,7 @@ const pollSlice = createSlice({
 
     builder.addCase(handleAddAnswer.fulfilled, (state, action) => {
       const { answer, id, authedUser } = action.payload.answer
-      const votesKey = answer + 'Votes'
-
-      state[id][votesKey].push(authedUser)
+      state[id].options[answer].votes.push(authedUser)
     })
   },
 })
