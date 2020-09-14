@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { handleInitialData } from './initialData'
+import { requestInitialData } from '../sagas/initialData'
 
 const authedUserSlice = createSlice({
   name: 'authedUser',
@@ -7,7 +7,7 @@ const authedUserSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder.addCase(
-      handleInitialData.fulfilled,
+      requestInitialData.fulfilled,
       (_state, action) => action.payload.authedUser
     )
   },

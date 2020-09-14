@@ -1,5 +1,5 @@
 import React, { useState, ChangeEvent, SyntheticEvent } from 'react'
-import { handleAddPoll } from '../redux/modules/polls'
+import { addPoll } from '../redux/sagas/polls'
 import { useHistory } from 'react-router-dom'
 import { useAppDispatch } from '../redux'
 
@@ -20,7 +20,7 @@ const AddPoll = () => {
     e.preventDefault()
     history.push('/')
     dispatch(
-      handleAddPoll({
+      addPoll.trigger({
         question,
         ...options,
       })

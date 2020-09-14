@@ -1,5 +1,5 @@
 import React from 'react'
-import { handleAddAnswer } from '../redux/modules/answers'
+import { addAnswer } from '../redux/sagas/answers'
 import { getPercentage } from '../utils/helpers'
 import { useParams } from 'react-router-dom'
 import { createSelector } from '@reduxjs/toolkit'
@@ -50,7 +50,7 @@ const Poll = () => {
   const handleAnswer = (answer: string) => {
     if (vote === null) {
       dispatch(
-        handleAddAnswer({
+        addAnswer.trigger({
           authedUser,
           answer,
           id,

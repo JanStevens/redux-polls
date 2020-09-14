@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { useAppDispatch, useAppSelector } from '../redux'
-import { handleInitialData } from '../redux/modules/initialData'
+import { requestInitialData } from '../redux/sagas/initialData'
 import { BrowserRouter as Router, Route } from 'react-router-dom'
 import Leaderboard from './Leaderboard'
 import Dashboard from './Dashboard'
@@ -13,7 +13,7 @@ function App() {
   const loading = useAppSelector((state) => state.authedUser === '')
 
   useEffect(() => {
-    dispatch(handleInitialData())
+    dispatch(requestInitialData.trigger())
   }, [dispatch])
 
   return (

@@ -7,6 +7,11 @@ import { reducer as authedUser } from './modules/authedUser'
 import { reducer as usersReducer } from './modules/users'
 import { reducer as pollsReducer } from './modules/polls'
 
+import createSagaMiddleware from 'redux-saga'
+import rootSaga from './sagas'
+
+const sagaMiddleware = createSagaMiddleware()
+
 const store = configureStore({
   reducer: {
     authedUser,
@@ -14,9 +19,14 @@ const store = configureStore({
     polls: pollsReducer,
     loadingBar: loadingBarReducer,
   },
-  middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(middleware),
+  middleware: (getDefaultMiddleware) => [
+    ...getDefaultMiddleware(),
+    sagaMiddleware,
+    ...middleware,
+  ],
 })
+
+sagaMiddleware.run(rootSaga)
 
 export type RootState = ReturnType<typeof store.getState>
 export type AppDispatch = typeof store.dispatch
